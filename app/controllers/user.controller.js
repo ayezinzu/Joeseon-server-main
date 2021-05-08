@@ -21,7 +21,8 @@ exports.moderatorBoard = (req, res) => {
 
 exports.getUser = function(req,res){
   // Fetch the user by id 
-  User.findOne({_id: req.userId}).then(function(user){
+  User.findByPk(req.userId).then(function(user){
+    console.log(req.userId)
     var authorities = [];
     user.getRoles().then(roles => {
       for (let i = 0; i < roles.length; i++) {
