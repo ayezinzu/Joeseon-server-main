@@ -49,7 +49,11 @@ exports.moderatorBoard = (req, res) => {
 
 exports.getUser = function(req,res){
   // Fetch the user by id 
-  User.findOne({_id: req.userId}).then(function(user){
+  User.findOne({
+   where: {
+    id: req.userId
+   }
+  }).then(function(user){
     var authorities = [];
     user.getRoles().then(roles => {
       for (let i = 0; i < roles.length; i++) {
