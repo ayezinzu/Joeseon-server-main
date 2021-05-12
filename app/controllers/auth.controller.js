@@ -218,7 +218,7 @@ exports.resetPassword = async (req, res) => {
       }
     });
 
-    var newPassword = bcrypt.hashSync(req.body.password1, 8);
+    var newPassword = bcrypt.hashSync(req.body.password, 8);
 
     await User.update({
       password: newPassword
