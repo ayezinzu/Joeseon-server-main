@@ -121,7 +121,7 @@ exports.getImageUrl = async (req,res)=> {
   })
   .then(document => {
     if (!document) {
-      return res.status(200).send({ message: "File not uploaded yet" });
+      return res.status(200).send({ message: "File not uploaded yet", status: "not_uploaded" });
     }else {
       file = bucket.file(document.name)
       return file.getSignedUrl({
