@@ -53,7 +53,8 @@ module.exports = function(app) {
     controller.logout);
 
   app.put("/api/change_password",
-  [authJwt.verifyToken],
+  [authJwt.verifyToken,
+    verifySignUp.validatePassword],
     controller.changePassword);
 
 };
