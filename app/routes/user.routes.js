@@ -1,4 +1,5 @@
 const { authJwt } = require("../middleware");
+const { verifySignUp } = require("../middleware");
 const controller = require("../controllers/user.controller");
 const multer = require('multer')
 
