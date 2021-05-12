@@ -38,8 +38,8 @@ redisClient.on('ready',function() {
   console.log("Redis is ready");
  });
  
- redisClient.on('error',function() {
-  console.log("Error in Redis");
+ redisClient.on('error',function(err) {
+  console.log("Redis Error: " + err);
  });
 
 // simple route
