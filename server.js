@@ -1,6 +1,10 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
+var redis = require('redis');
+const multer = require('multer')
+
+const redisConfig = require("./app/config/redis.config");
 
 const app = express();
 
@@ -10,7 +14,7 @@ app.use(cors());
 app.use(bodyParser.json());
 
 // parse requests of content-type - application/x-www-form-urlencoded
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({ extended: false }));
 
 // database
 const db = require("./app/models");
@@ -23,6 +27,17 @@ db.sequelize.sync();
 //   initial();
 // });
 
+var redisClient = redis.createClient({host : redisConfig.HOST, port : redisConfig.PORT});
+
+
+redisClient.on('ready',function() {
+  console.log("Redis is ready");
+ });
+ 
+ redisClient.on('error',function() {
+  console.log("Error in Redis");
+ });
+
 // simple route
 app.get("/", (req, res) => {
   res.json({ message: "Welcome to Test application." });
@@ -33,7 +48,7 @@ require('./app/routes/auth.routes')(app);
 require('./app/routes/user.routes')(app);
 
 // set port, listen for requests
-const PORT = process.env.PORT || 8081;
+const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}.`);
 });
