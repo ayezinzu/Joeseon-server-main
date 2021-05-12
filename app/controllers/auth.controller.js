@@ -148,7 +148,7 @@ exports.forgotPassword = async (req, res) => {
       from: 'krishna.uppili96@gmail.com',
       to: req.body.email,
       subject: 'Forgot Password',
-      text: 'To reset your password, please click the link below.\n\n'+appConfig.host+'?token='+token+'&email='+req.body.email
+      text: 'To reset your password, please click the link below.\n\n'+appConfig.host+'?token='+encodeURIComponent(token)+'&email='+req.body.email
   };
  
   //send email
@@ -192,7 +192,7 @@ exports.getResetPassword = async (req, res) => {
 
 exports.resetPassword = async (req, res) => {
   //compare passwords
-  if (req.body.password1 !== req.body.password2) {
+  if (req.body.password !== req.body.confirm_password) {
     res.json({status: 'error', message: 'Passwords do not match. Please try again.'});
   }
  
