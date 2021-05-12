@@ -50,19 +50,19 @@ checkRolesExisted = (req, res, next) => {
 };
 
 validatePassword = (req, res, next) => {
-  console.log(req.body.password)
-  var strongPasswordRegex = new RegExp("^(?=.*[a-z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})");
-  if(!strongPasswordRegex.test(req.body.password)) {
-    res.status(400).send({ message: 'The password must contain at least 8 characters including at least one number and one special character.'});
-    return;
-  }
-  next();
-};
+    console.log(req.body.password)
+    var strongPasswordRegex = new RegExp("^(?=.*[a-z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})");
+    if(!strongPasswordRegex.test(req.body.password)) {
+      res.status(400).send({ message: 'The password must contain at least 8 characters including at least one number and one special character.'});
+      return;
+    }
+    next();
+ };
 
 const verifySignUp = {
-checkDuplicateUsernameOrEmail: checkDuplicateUsernameOrEmail,
-checkRolesExisted: checkRolesExisted,
-validatePassword: validatePassword
+  checkDuplicateUsernameOrEmail: checkDuplicateUsernameOrEmail,
+  checkRolesExisted: checkRolesExisted,
+  validatePassword: validatePassword
 };
 
 module.exports = verifySignUp;
