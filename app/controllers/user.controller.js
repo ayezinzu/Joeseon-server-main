@@ -121,7 +121,7 @@ exports.getImageUrl = async (req,res)=> {
   })
   .then(document => {
     if (!document) {
-      return res.status(404).send({ message: "File not uploaded yet" });
+      return res.status(200).send({ message: "File not uploaded yet" });
     }else {
       file = bucket.file(document.name)
       return file.getSignedUrl({
@@ -134,6 +134,7 @@ exports.getImageUrl = async (req,res)=> {
     }
   });
 }
+
 
 exports.changePassword = async (req, res) => {
   var newPassword = bcrypt.hashSync(req.body.password, 8);

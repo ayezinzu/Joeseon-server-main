@@ -37,13 +37,13 @@ module.exports = function(app) {
     controller.getUser
   );
 
-  app.route('/api/upload').post(multer().single('file'),
+  app.route('/api/user/document').post(multer().single('file'),
   [authJwt.verifyToken],
   controller.uploadImage
   );
 
   app.get(
-    "/api/get_url",
+    "/api/user/document",
     [authJwt.verifyToken],
     controller.getImageUrl
   );
