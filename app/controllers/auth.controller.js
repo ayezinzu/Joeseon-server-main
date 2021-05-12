@@ -148,7 +148,7 @@ exports.forgotPassword = async (req, res) => {
       from: 'krishna.uppili96@gmail.com',
       to: req.body.email,
       subject: 'Forgot Password',
-      text: 'To reset your password, please click the link below.\n\n'+appConfig.host+'/api/reset_password?token='+token+'&email='+req.body.email
+      text: 'To reset your password, please click the link below.\n\n'+appConfig.host+'?token='+token+'&email='+req.body.email
   };
  
   //send email
