@@ -6,7 +6,11 @@ const User = db.user;
 
 var redis = require('redis');
 
-var redisClient = redis.createClient({host : redisConfig.HOST, port : redisConfig.PORT});
+var redisClient = redis.createClient(redisConfig.REDIS_URL, {
+  tls: {
+    rejectUnauthorized: false
+  }
+});
 
 
 //Token verification callback function

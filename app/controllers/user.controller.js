@@ -25,7 +25,11 @@ const gcsConfig = require("../config/gcs.config")
 
 var redis = require('redis');
 
-var redisClient = redis.createClient({host : redisConfig.HOST, port : redisConfig.PORT});
+var redisClient = redis.createClient(redisConfig.REDIS_URL, {
+  tls: {
+    rejectUnauthorized: false
+  }
+});
 
 exports.allAccess = (req, res) => {
   res.status(200).send("Public Content.");
