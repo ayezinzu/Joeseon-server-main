@@ -22,4 +22,18 @@ module.exports = function(app) {
 
   app.post("/api/auth/signin", controller.signin);
 
+  app.post("/api/auth/forgot_password",
+    controller.forgotPassword
+  );
+
+  app.get("/api/reset_password",
+    controller.getResetPassword
+  );
+
+  app.post("/api/auth/reset_password",
+     controller.resetPassword
+  );
+
+  
+
 };

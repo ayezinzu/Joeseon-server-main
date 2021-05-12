@@ -1,5 +1,6 @@
 const { authJwt } = require("../middleware");
 const controller = require("../controllers/user.controller");
+const multer = require('multer')
 
 module.exports = function(app) {
   app.use(function(req, res, next) {
@@ -29,10 +30,30 @@ module.exports = function(app) {
     [authJwt.verifyToken, authJwt.isAdmin],
     controller.adminBoard
   );
-
+  
   app.get(
     "/api/user",
     [authJwt.verifyToken],
     controller.getUser
   );
+
+  app.route('/api/upload').post(multer().single('file'),
+  [authJwt.verifyToken],
+  controller.uploadImage
+  );
+
+  app.get(
+    "/api/get_url",
+    [authJwt.verifyToken],
+    controller.getImageUrl
+  );
+
+  app.post("/api/logout",
+  [authJwt.verifyToken],
+    controller.logout);
+
+  app.put("/api/change_password",
+  [authJwt.verifyToken],
+    controller.changePassword);
+
 };
