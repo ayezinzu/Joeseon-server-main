@@ -27,20 +27,16 @@ db.sequelize.sync();
 //   initial();
 // });
 
-// var redisClient = redis.createClient(process.env.REDIS_URL, {
-//   tls: {
-//     rejectUnauthorized: false
-//   }
-// });
+var redisClient = redis.createClient(process.env.REDIS_URL);
 
 
-// redisClient.on('ready',function() {
-//   console.log("Redis is ready");
-//  });
+redisClient.on('ready',function() {
+  console.log("Redis is ready");
+ });
  
-//  redisClient.on('error',function(err) {
-//   console.log("Redis Error: " + err);
-//  });
+ redisClient.on('error',function(err) {
+  console.log("Redis Error: " + err);
+ });
 
 // simple route
 app.get("/", (req, res) => {

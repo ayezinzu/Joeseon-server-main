@@ -9,11 +9,7 @@ const ResetToken = db.token;
 
 var redis = require('redis');
 
-// var redisClient = redis.createClient(process.env.REDIS_URL, {
-//   tls: {
-//     rejectUnauthorized: false
-//   }
-// });
+var redisClient = redis.createClient(process.env.REDIS_URL);
 
 const Op = db.Sequelize.Op;
 
@@ -91,11 +87,11 @@ exports.signin = (req, res) => {
           authorities.push(roles[i].name);
         }
 
-        // redisClient.hmset(token, {"id" :user.id, "username": user.username, "email": user.email});
-        // redisClient.hgetall(token,function(err,reply) {
-        //     console.log(err);
-        //     console.log(reply);
-        // });
+        redisClient.hmset(token, {"id" :user.id, "username": user.username, "email": user.email});
+        redisClient.hgetall(token,function(err,reply) {
+            console.log(err);
+            console.log(reply);
+        });
 
         res.status(200).send({
           id: user.id,
@@ -113,7 +109,6 @@ exports.signin = (req, res) => {
 
 exports.forgotPassword = async (req, res) => {
 //ensure that you have a user with this email
-  console.log("Hello")
   var email = await User.findOne({where: { email: req.body.email }});
   console.log(email)
   if (email == null) {
