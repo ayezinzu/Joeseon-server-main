@@ -66,7 +66,7 @@ module.exports = function(app) {
   );
 
   app.get(
-    "/api/document/:id",
+    "/api/users/:id/document",
     [authJwt.verifyToken,
     authJwt.isModeratorOrAdmin],
     controller.viewDocument)
