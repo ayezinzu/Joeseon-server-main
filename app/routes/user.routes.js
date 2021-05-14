@@ -66,7 +66,7 @@ module.exports = function(app) {
   );
 
   app.get(
-    "/api/view_document",
+    "/api/view_document/:id",
     [authJwt.verifyToken,
     authJwt.isModeratorOrAdmin],
     controller.viewDocument)
@@ -76,28 +76,28 @@ module.exports = function(app) {
     controller.getUsers)
 
   app.post(
-    "/api/verify_user",
+    "/api/verify_user/:id",
     [authJwt.verifyToken,
     authJwt.isModerator],
     controller.verifyUser
   )
 
   app.post(
-    "/api/post",
+    "/api/posts",
     [authJwt.verifyToken,
     authJwt.isModeratorOrAdmin],
     controller.createPost
   )
 
   app.put(
-    "/api/post",
+    "/api/posts/:id",
     [authJwt.verifyToken,
     authJwt.isModeratorOrAdmin],
     controller.updatePost
   )
   
   app.delete(
-    "/api/post",
+    "/api/posts/:id",
     [authJwt.verifyToken,
     authJwt.isModeratorOrAdmin],
     controller.deletePost

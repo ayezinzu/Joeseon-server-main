@@ -181,7 +181,7 @@ exports.viewDocument = async (req,res)=> {
 
   Document.findOne({
     where: {
-      userId: req.body.userId
+      userId: req.params.id
     }
   })
   .then(document => {
@@ -205,7 +205,7 @@ exports.verifyUser = async (req,res) => {
     status: req.body.status
   },{
   where: {
-    userId: req.body.userId
+    userId: req.params.id
   }
   }).then(result =>
     res.status(200).json({ message: 'Status updated successfully'})
@@ -234,7 +234,7 @@ exports.updatePost = async (req,res) => {
     content: req.body.content
   },{
   where: {
-    id: req.body.id
+    id: req.params.id
   }
   }).then(result =>
     res.status(200).json(result)
@@ -247,7 +247,7 @@ exports.updatePost = async (req,res) => {
 exports.deletePost = async (req,res) => {
   await Post.destroy({
   where: {
-    id: req.body.Id
+    id: req.params.id
   }
   }).then(result =>
     res.status(200).json({ message: 'Post updated successfully', post: result})
@@ -261,7 +261,7 @@ exports.viewPosts = async (req, res) => {
   var response = []
   await Post.findAndCountAll({
     limit: 6,
-    offset: (req.body.page-1) * 6 
+    offset: (req.query.page-1) * 6 
   })
   .then(posts => {
         res.json(posts)
