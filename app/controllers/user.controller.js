@@ -271,6 +271,21 @@ exports.viewPosts = async (req, res) => {
   })
 }
 
+exports.getPost = async (req,res)=> {
+ 
+  Post.findOne({
+    where: {
+      id: req.params.Id
+    }
+  })
+  .then(post => {
+      return res.status(200).json(post);
+  })
+  .catch(error =>{
+    return res.status(400).message({message: error})
+  });
+}
+
 
 exports.logout = function(req,res){
   let token = req.body.token || req.query.token || req.headers['authorization'] || req.headers['x-access-token'];

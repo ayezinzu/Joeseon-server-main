@@ -109,6 +109,12 @@ module.exports = function(app) {
     controller.viewPosts
   )
 
+  app.get(
+    "/api/posts/:id",
+    [authJwt.verifyToken],
+    controller.getPost
+  )
+
 
 
 };
