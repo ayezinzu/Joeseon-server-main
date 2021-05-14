@@ -147,12 +147,13 @@ exports.getUsers = async (req, res) => {
   var response = []
   await User.findAll({
     include: [{
-      model: Document
-    },
-    {
       model: Role, 
       attributes: ['name'], where: { name: ['user'] }
-    }]
+    },
+    {
+      model: Document
+    }
+   ]
   }).then(users => {
     console.log(users)
     for(let i=0;i<users.length;i++){

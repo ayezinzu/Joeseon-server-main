@@ -45,12 +45,11 @@ db.user.belongsToMany(db.role, {
 db.ROLES = ["user", "admin", "moderator"];
 
 db.user.hasOne(db.document,{
-  through: "user_document",
-  foreignKey: "DocumentId"
+  foreignKey: "userId",
+  sourceKey: "id"
 });
 
 db.document.belongsTo(db.user,{
-  through: "user_document",
   foreignKey: "userId"
 });
 
