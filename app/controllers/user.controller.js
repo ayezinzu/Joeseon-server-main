@@ -21,6 +21,7 @@ const multer = Multer({
 const User = db.user;
 const Document = db.document;
 const Post = db.post;
+const Role = db.role;
 
 const redisConfig = require("../config/redis.config");
 const gcsConfig = require("../config/gcs.config")
@@ -147,13 +148,17 @@ exports.getUsers = async (req, res) => {
   await User.findAll({
     include: [{
       model: Document
+    }],
+    include: [{
+      model: Role, 
+      attributes: ['name'], where: { name: ['user'] }
     }]
   }).then(users => {
     for(let i=0;i<users.length;i++){
       var user = {}
       user.email = users[i].email
       user.username = users[i].username
-      user.userId = users[i].id
+      user.id = users[i].id
         if (users[i].document!=null){  
             user.document_status = users[i].document.status
             console.log(user)  

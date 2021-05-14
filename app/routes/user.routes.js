@@ -39,7 +39,7 @@ module.exports = function(app) {
   );
 
   app.route(
-    '/api/user/document'
+    '/api/users/document'
   ).post(
     multer().single('file'),
     [authJwt.verifyToken],
@@ -66,17 +66,19 @@ module.exports = function(app) {
   );
 
   app.get(
-    "/api/view_document/:id",
+    "/api/document/:id",
     [authJwt.verifyToken,
     authJwt.isModeratorOrAdmin],
     controller.viewDocument)
 
   app.get(
-    "/api/get_users",
+    "/api/users",
+    [authJwt.verifyToken,
+    authJwt.isModeratorOrAdmin],
     controller.getUsers)
 
   app.post(
-    "/api/verify_user/:id",
+    "/api/users/verify/:id",
     [authJwt.verifyToken,
     authJwt.isModerator],
     controller.verifyUser
