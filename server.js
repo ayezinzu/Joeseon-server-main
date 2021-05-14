@@ -27,7 +27,7 @@ db.sequelize.sync();
 //   initial();
 // });
 
-var redisClient = redis.createClient(process.env.REDIS_URL);
+var redisClient = redis.createClient(redisConfig.REDIS_URL);
 
 
 redisClient.on('ready',function() {
