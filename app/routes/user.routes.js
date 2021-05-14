@@ -66,45 +66,45 @@ module.exports = function(app) {
   );
 
   app.get(
-    "/api/mod/view_document",
+    "/api/view_document",
     [authJwt.verifyToken,
     authJwt.isModeratorOrAdmin],
     controller.viewDocument)
 
   app.get(
-    "/api/user/get_users",
+    "/api/get_users",
     controller.getUsers)
 
   app.post(
-    "/api/user/verify_user",
+    "/api/verify_user",
     [authJwt.verifyToken,
-    authJwt.isModeratorOrAdmin],
+    authJwt.isModerator],
     controller.verifyUser
   )
 
   app.post(
-    "/api/admin/post",
+    "/api/post",
     [authJwt.verifyToken,
-    authJwt.isAdmin],
+    authJwt.isModeratorOrAdmin],
     controller.createPost
   )
 
   app.put(
-    "/api/admin/post",
+    "/api/post",
     [authJwt.verifyToken,
-    authJwt.isAdmin],
+    authJwt.isModeratorOrAdmin],
     controller.updatePost
   )
   
   app.delete(
-    "/api/admin/post",
+    "/api/post",
     [authJwt.verifyToken,
-    authJwt.isAdmin],
+    authJwt.isModeratorOrAdmin],
     controller.deletePost
   )
 
   app.get(
-    "/api/user/posts",
+    "/api/posts",
     [authJwt.verifyToken],
     controller.viewPosts
   )

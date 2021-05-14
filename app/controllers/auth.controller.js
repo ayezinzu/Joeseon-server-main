@@ -9,7 +9,7 @@ const ResetToken = db.token;
 
 var redis = require('redis');
 
-var redisClient = redis.createClient(redisConfig.REDIS_URL);
+var redisClient = redis.createClient(process.env.REDIS_URL);
 
 const Op = db.Sequelize.Op;
 

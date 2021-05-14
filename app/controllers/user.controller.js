@@ -28,7 +28,7 @@ const gcsConfig = require("../config/gcs.config")
 var redis = require('redis');
 const { post } = require("../models");
 
-var redisClient = redis.createClient(redisConfig.REDIS_URL);
+var redisClient = redis.createClient(process.env.REDIS_URL);
 
 exports.allAccess = (req, res) => {
   res.status(200).send("Public Content.");
