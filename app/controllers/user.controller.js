@@ -88,6 +88,12 @@ exports.changePassword = async (req, res) => {
 }
 
 exports.uploadImage = async (req, res, next) => {
+  await Document.destroy({
+    where :{
+      userId: req.userId
+    }
+  })
+  
   const type = mime.lookup(req.file.originalname);
   console.log(type)
 	const storage = new Storage({
