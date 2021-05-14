@@ -73,8 +73,8 @@ module.exports = function(app) {
 
   app.get(
     "/api/users",
- //   [authJwt.verifyToken,
- //   authJwt.isModeratorOrAdmin],
+    [authJwt.verifyToken,
+    authJwt.isModeratorOrAdmin],
     controller.getUsers)
 
   app.post(
