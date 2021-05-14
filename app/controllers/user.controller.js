@@ -148,28 +148,30 @@ exports.getUsers = async (req, res) => {
   await User.findAll({
     include: [{
       model: Document
-    }],
-    include: [{
+    },
+    {
       model: Role, 
       attributes: ['name'], where: { name: ['user'] }
     }]
   }).then(users => {
+    console.log(users)
     for(let i=0;i<users.length;i++){
       var user = {}
       user.email = users[i].email
       user.username = users[i].username
       user.id = users[i].id
-        if (users[i].document!=null){  
-            user.document_status = users[i].document.status
-            console.log(user)  
-          }
-        else{
-          user.document_status = "not_uploaded"      
+      console.log(users[i].document)
+      if (users[i].document!=null){  
+          user.document_status = users[i].document.status
+          console.log(users[i].document)  
         }
-        response.push(user)
-        if(users.length == response.length)
-            res.json(response)
+      else{
+        user.document_status = "not_uploaded"      
       }
+      response.push(user)
+      if(users.length == response.length)
+          res.json(response)
+    }
   })
   .catch(error => {
     res.status(400).send({ error: error})
