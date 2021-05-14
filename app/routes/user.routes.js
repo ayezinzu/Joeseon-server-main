@@ -39,7 +39,7 @@ module.exports = function(app) {
   );
 
   app.route(
-    '/api/users/document'
+    '/api/user/document'
   ).post(
     multer().single('file'),
     [authJwt.verifyToken],
