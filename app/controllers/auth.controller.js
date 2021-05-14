@@ -9,7 +9,7 @@ const ResetToken = db.token;
 
 var redis = require('redis');
 
-var redisClient = redis.createClient(process.env.REDIS_URL);
+var redisClient = redis.createClient(redisConfig.REDIS_URL);
 
 const Op = db.Sequelize.Op;
 
@@ -143,7 +143,7 @@ exports.forgotPassword = async (req, res) => {
       from: 'krishna.uppili96@gmail.com',
       to: req.body.email,
       subject: 'Forgot Password',
-      text: 'To reset your password, please click the link below.\n\n'+appConfig.host+'?token='+encodeURIComponent(token)+'&email='+req.body.email
+      text: 'To reset your password, please click the link below.\n\n'+appConfig.host+'?token='+encodeURIComponent(token)
   };
  
   //send email
@@ -151,39 +151,15 @@ exports.forgotPassword = async (req, res) => {
   .send(message)
   .then(() => {
     console.log('Email sent')
+    return res.status(200).json({message: "Email Sent"})
   })
   .catch((error) => {
     console.error(error)
+    return res.status(402).json({message: error})
   })
  
-  res.json({status: 'ok'});
+  //res.json({status: 'ok'});
 };
-
-exports.getResetPassword = async (req, res) => {
-   await ResetToken.destroy({
-    where: {
-      expiration: { [Op.lt]: Sequelize.fn('CURDATE')},
-    }
-  });
- 
-  //find the token
-  var record = await ResetToken.findOne({
-    where: {
-      email: req.query.email,
-      expiration: { [Op.gt]: Sequelize.fn('CURDATE')},
-      token: req.query.token,
-      used: 0
-    }
-  });
- 
-  if (record == null) {
-    res.json({status: 'error', message: 'Token has expired. Please try again.'});
-  }
- 
-  res.sendFile(path.join(__dirname + '../../../views/reset_password.html'));
-
-};
-
 
 exports.resetPassword = async (req, res) => {
   //compare passwords
@@ -193,7 +169,6 @@ exports.resetPassword = async (req, res) => {
  
   var record = await ResetToken.findOne({
     where: {
-      email: req.body.email,
       expiration: { [Op.gt]: Sequelize.fn('CURDATE')},
       token: req.body.token,
       used: 0
@@ -204,12 +179,13 @@ exports.resetPassword = async (req, res) => {
     res.json({status: 'error', message: 'Token not found. Please try the reset password process again.'});
   }
   else {
-    var upd = await ResetToken.update({
+
+    await ResetToken.update({
       used: 1
     },
     {
       where: {
-        email: req.body.email
+        email: record.email
       }
     });
 
@@ -220,7 +196,7 @@ exports.resetPassword = async (req, res) => {
     },
     {
     where: {
-      email: req.body.email
+      email: record.email
     }
     }).then(result =>
       res.status(200).json({ message: 'Password reset. Please login with your new password.'})
