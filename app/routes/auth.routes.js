@@ -26,10 +26,6 @@ module.exports = function(app) {
     controller.forgotPassword
   );
 
-  app.get("/api/reset_password",
-    controller.getResetPassword
-  );
-
   app.post("/api/auth/reset_password",
     [verifySignUp.validatePassword],
      controller.resetPassword

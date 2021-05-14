@@ -38,9 +38,12 @@ module.exports = function(app) {
     controller.getUser
   );
 
-  app.route('/api/user/document').post(multer().single('file'),
-  [authJwt.verifyToken],
-  controller.uploadImage
+  app.route(
+    '/api/user/document'
+  ).post(
+    multer().single('file'),
+    [authJwt.verifyToken],
+    controller.uploadImage
   );
 
   app.get(
@@ -49,13 +52,63 @@ module.exports = function(app) {
     controller.getImageUrl
   );
 
-  app.post("/api/logout",
-  [authJwt.verifyToken],
-    controller.logout);
+  app.post(
+    "/api/user/logout",
+    [authJwt.verifyToken],
+    controller.logout
+  );
 
-  app.put("/api/change_password",
-  [authJwt.verifyToken,
+  app.put(
+    "/api/change_password",
+    [authJwt.verifyToken,
     verifySignUp.validatePassword],
-    controller.changePassword);
+    controller.changePassword
+  );
+
+  app.get(
+    "/api/mod/view_document",
+    [authJwt.verifyToken,
+    authJwt.isModeratorOrAdmin],
+    controller.viewDocument)
+
+  app.get(
+    "/api/user/get_users",
+    controller.getUsers)
+
+  app.post(
+    "/api/user/verify_user",
+    [authJwt.verifyToken,
+    authJwt.isModeratorOrAdmin],
+    controller.verifyUser
+  )
+
+  app.post(
+    "/api/admin/post",
+    [authJwt.verifyToken,
+    authJwt.isAdmin],
+    controller.createPost
+  )
+
+  app.put(
+    "/api/admin/post",
+    [authJwt.verifyToken,
+    authJwt.isAdmin],
+    controller.updatePost
+  )
+  
+  app.delete(
+    "/api/admin/post",
+    [authJwt.verifyToken,
+    authJwt.isAdmin],
+    controller.deletePost
+  )
+
+  app.get(
+    "/api/user/posts",
+    [authJwt.verifyToken],
+    controller.viewPosts
+  )
+
+
 
 };
