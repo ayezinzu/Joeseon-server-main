@@ -273,16 +273,17 @@ exports.viewPosts = async (req, res) => {
 
 exports.getPost = async (req,res)=> {
  
-  Post.findOne({
+ await Post.findOne({
     where: {
-      id: req.params.Id
+      id: req.params.id
     }
   })
   .then(post => {
       return res.status(200).json(post);
   })
   .catch(error =>{
-    return res.status(400).message({message: error})
+    console.log(error)
+    return res.status(400).send({message: error})
   });
 }
 
