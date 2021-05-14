@@ -259,7 +259,10 @@ exports.deletePost = async (req,res) => {
 
 exports.viewPosts = async (req, res) => {
   var response = []
-  await Post.findAll()
+  await Post.findAndCountAll({
+    limit: 6,
+    offset: req.body.page * 6 
+  })
   .then(posts => {
         res.json(posts)
   })
