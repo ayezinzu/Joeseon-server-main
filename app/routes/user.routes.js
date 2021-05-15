@@ -11,26 +11,6 @@ module.exports = function(app) {
     );
     next();
   });
-
-  app.get("/api/test/all", controller.allAccess);
-
-  app.get(
-    "/api/test/user",
-    [authJwt.verifyToken],
-    controller.userBoard
-  );
-
-  app.get(
-    "/api/test/mod",
-    [authJwt.verifyToken, authJwt.isModerator],
-    controller.moderatorBoard
-  );
-
-  app.get(
-    "/api/test/admin",
-    [authJwt.verifyToken, authJwt.isAdmin],
-    controller.adminBoard
-  );
   
   app.get(
     "/api/user",
@@ -66,46 +46,6 @@ module.exports = function(app) {
   );
 
   app.get(
-    "/api/users/:id/document",
-    [authJwt.verifyToken,
-    authJwt.isModeratorOrAdmin],
-    controller.viewDocument)
-
-  app.get(
-    "/api/users",
-    [authJwt.verifyToken,
-    authJwt.isModeratorOrAdmin],
-    controller.getUsers)
-
-  app.post(
-    "/api/users/:id/verify",
-    [authJwt.verifyToken,
-    authJwt.isModerator],
-    controller.verifyUser
-  )
-
-  app.post(
-    "/api/posts",
-    [authJwt.verifyToken,
-    authJwt.isModeratorOrAdmin],
-    controller.createPost
-  )
-
-  app.put(
-    "/api/posts/:id",
-    [authJwt.verifyToken,
-    authJwt.isModeratorOrAdmin],
-    controller.updatePost
-  )
-  
-  app.delete(
-    "/api/posts/:id",
-    [authJwt.verifyToken,
-    authJwt.isModeratorOrAdmin],
-    controller.deletePost
-  )
-
-  app.get(
     "/api/posts",
     [authJwt.verifyToken],
     controller.viewPosts
@@ -116,7 +56,5 @@ module.exports = function(app) {
     [authJwt.verifyToken],
     controller.getPost
   )
-
-
 
 };
