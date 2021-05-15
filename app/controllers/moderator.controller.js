@@ -3,6 +3,21 @@ const Sequelize = require("sequelize");
 
 var bcrypt = require("bcryptjs");
 var crypto = require("crypto");
+
+const uuid = require('uuid/v4');
+const mime = require('mime')
+const { Storage }  = require('@google-cloud/storage');
+const Multer = require('multer');
+const {format} = require('util');
+const gcs  = require("../helpers/gcs")
+
+const multer = Multer({
+  storage: Multer.memoryStorage(),
+  limits: {
+    fileSize: 5 * 1024 * 1024, // no larger than 5mb, you can change as needed.
+  },
+});
+
 const User = db.user;
 const Document = db.document;
 const Post = db.post;
@@ -13,6 +28,8 @@ const gcsConfig = require("../config/gcs.config")
 
 var redis = require('redis');
 const { post } = require("../models");
+
+var redisClient = redis.createClient(process.env.REDIS_URL);
 
 exports.getUsers = async (req, res) => {
     var response = []
