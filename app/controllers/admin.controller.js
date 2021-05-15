@@ -87,8 +87,17 @@ exports.getModerators = async (req, res) => {
       }
      ]
     }).then(users => {
-      res.status(200).json(users)
-    })
+        for(let i=0;i<users.length;i++){
+          var user = {}
+          user.email = users[i].email
+          user.username = users[i].username
+          user.id = users[i].id
+          user.roles = ['moderator']
+          response.push(user)
+          if(users.length == response.length)
+              res.json(response)
+        }
+      })
     .catch(error => {
       res.status(400).send({ error: error})
     })
