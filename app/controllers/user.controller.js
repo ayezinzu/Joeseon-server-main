@@ -93,7 +93,7 @@ exports.uploadImage = async (req, res, next) => {
       userId: req.userId
     }
   })
-  
+
   const type = mime.lookup(req.file.originalname);
   console.log(type)
 	const storage = new Storage({
@@ -149,128 +149,6 @@ exports.getImageUrl = async (req,res)=> {
   });
 }
 
-exports.getUsers = async (req, res) => {
-  var response = []
-  await User.findAll({
-    include: [{
-      model: Role, 
-      attributes: ['name'], where: { name: ['user'] }
-    },
-    {
-      model: Document
-    }
-   ]
-  }).then(users => {
-    console.log(users)
-    for(let i=0;i<users.length;i++){
-      var user = {}
-      user.email = users[i].email
-      user.username = users[i].username
-      user.id = users[i].id
-      console.log(users[i].document)
-      if (users[i].document!=null){  
-          user.document_status = users[i].document.status
-          console.log(users[i].document)  
-        }
-      else{
-        user.document_status = "not_uploaded"      
-      }
-      response.push(user)
-      if(users.length == response.length)
-          res.json(response)
-    }
-  })
-  .catch(error => {
-    res.status(400).send({ error: error})
-  })
-}
-
-exports.viewDocument = async (req,res)=> {
-  const storage = new Storage({
-		projectId: gcsConfig.google.projectId,
-		keyFilename: "./spherical-bloom-283116-c3d2f8c13036.json",
-	});
-
-  const bucket = storage.bucket(gcsConfig.google.bucket);
-
-  Document.findOne({
-    where: {
-      userId: req.params.id
-    }
-  })
-  .then(document => {
-    if (!document) {
-      return res.status(200).send({ message: "File not uploaded yet", status: "not_uploaded" });
-    }else {
-      file = bucket.file(document.name)
-      return file.getSignedUrl({
-        action: 'read',
-        expires: Date.now() + 15 * 60 * 1000
-      }).then(signedUrls => {
-        console.log(signedUrls[0]);
-        res.status(200).send({ url:  signedUrls[0], status: document.status }); 
-      });
-    }
-  });
-}
-
-exports.verifyUser = async (req,res) => {
-  await Document.update({
-    status: req.body.status
-  },{
-  where: {
-    userId: req.params.id
-  }
-  }).then(result =>
-    res.status(200).json({ message: 'Status updated successfully'})
-  )
-  .catch(err =>
-    res.status(400).json({message: err})
-  )
-};
-
-exports.createPost = async (req,res) => {
-  await Post.create({
-    title: req.body.title,
-    content: req.body.content
-  })
-  .then(post => {
-      res.status(200).json(post);
-    })
-  .catch(error => {
-    res.status(400).send({message: error});
-  });
-}
-
-exports.updatePost = async (req,res) => {
-  await Post.update({
-    title: req.body.title,
-    content: req.body.content
-  },{
-  where: {
-    id: req.params.id
-  }
-  }).then(result =>
-    res.status(200).json(result)
-  )
-  .catch(err =>
-    res.status(400).json({message: err})
-  )
-};
-
-exports.deletePost = async (req,res) => {
-  await Post.destroy({
-  where: {
-    id: req.params.id
-  }
-  }).then(result =>
-    res.status(200).json({ message: 'Post updated successfully', post: result})
-  )
-  .catch(err =>
-    res.status(400).json({message: err})
-  )
-};
-
 exports.viewPosts = async (req, res) => {
   var response = []
   await Post.findAndCountAll({
@@ -300,7 +178,6 @@ exports.getPost = async (req,res)=> {
     return res.status(400).send({message: error})
   });
 }
-
 
 exports.logout = function(req,res){
   let token = req.body.token || req.query.token || req.headers['authorization'] || req.headers['x-access-token'];
